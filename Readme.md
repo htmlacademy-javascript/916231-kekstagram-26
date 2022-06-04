@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Анна Сахно](https://up.htmlacademy.ru/javascript/26/user/916231).
-* Наставник: `Неизвестно`.
+- Студент: [Анна Сахно](https://up.htmlacademy.ru/javascript/26/user/916231).
+- Наставник: [Анастасия Ничипорчук](https://htmlacademy.ru/profile/id612797).
 
 ---
 
