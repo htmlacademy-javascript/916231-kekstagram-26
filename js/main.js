@@ -1,6 +1,6 @@
 const getRandomNumber = (min, max) => {
-  if (min > max || max < 0) {
-    return NaN;
+  if (min > max || min < 0 || max < 0) {
+    throw 'Неверные данные';
   }
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
