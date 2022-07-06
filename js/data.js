@@ -87,7 +87,7 @@ const createPhotos = () => {
   for(let i = 0; i < PHOTO_COUNT; i++) {
     const photo = {
       id: id[i],
-      url: `photos/${  id[i]  }.jpg`,
+      url: `photos/${  id[i] + 1  }.jpg`,
       description: DESCRIPTIONS[i],
       likes: likes[i],
       comments: getComments(getRandomNumber(1, 10)),
