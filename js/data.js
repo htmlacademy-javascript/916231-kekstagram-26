@@ -69,7 +69,7 @@ const getComments = (countComments) => {
   for(let i = 0; i < countComments; i++) {
     const comment = {
       id: id[i],
-      avatar: `img/avatar-${  getRandomNumber(1, 6)  }.svg`,
+      avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
       message: MESSAGES[getRandomNumber(0, MESSAGES.length - 1)],
       name: NAMES[getRandomNumber(0, NAMES.length - 1)],
     };
@@ -87,7 +87,7 @@ const createPhotos = () => {
   for(let i = 0; i < PHOTO_COUNT; i++) {
     const photo = {
       id: id[i],
-      url: `photos/${  id[i] + 1  }.jpg`,
+      url: `photos/${id[i] + 1}.jpg`,
       description: DESCRIPTIONS[i],
       likes: likes[i],
       comments: getComments(getRandomNumber(1, 10)),

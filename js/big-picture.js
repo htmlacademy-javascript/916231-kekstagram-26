@@ -1,3 +1,4 @@
+const ESCAPE_KEY = 27;
 const bigPictureSectionElement = document.querySelector('.big-picture');
 const imageElement = bigPictureSectionElement.querySelector('.big-picture__img').children[0];
 const likesCountElement = bigPictureSectionElement.querySelector('.likes-count');
@@ -5,7 +6,6 @@ const imageDescriptionElement = bigPictureSectionElement.querySelector('.social_
 const commentsCountElement = bigPictureSectionElement.querySelector('.comments-count');
 const commentsElement = bigPictureSectionElement.querySelector('.social__comments');
 const cancelButtonElement = bigPictureSectionElement.querySelector('.big-picture__cancel');
-const ESCAPE_KEY = 27;
 
 const getImageInfo = (url, likes, commentsLenght, description) => {
   imageElement.src = url;
@@ -60,13 +60,6 @@ const openModal = () => {
   });
 };
 
-function onPopupEscKeydown (evt) {
-  if (evt.keyCode === ESCAPE_KEY) {
-    evt.preventDefault();
-    closeModal();
-  }
-}
-
 const openBigPicture = (data) => {
   getImageInfo(data.url, data.likes, data.comments.length, data.description);
 
@@ -76,9 +69,18 @@ const openBigPicture = (data) => {
   bigPictureSectionElement
     .querySelector('.social__comment-count')
     .classList.add('hidden');
-  bigPictureSectionElement.querySelector('.comments-loader').classList.add('hidden');
+  bigPictureSectionElement
+    .querySelector('.comments-loader')
+    .classList.add('hidden');
 
   openModal();
 };
 
-export { openBigPicture };
+function onPopupEscKeydown(evt) {
+  if (evt.keyCode === ESCAPE_KEY) {
+    evt.preventDefault();
+    closeModal();
+  }
+}
+
+export {openBigPicture};
