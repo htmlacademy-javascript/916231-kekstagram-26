@@ -14,12 +14,12 @@ const pristine = new Pristine(formUploadFileElement, {
 
 const validateDescription = (value) => value.length <= 140;
 
-const getHashtags = (value) =>{
+const getHashtags = (value) => {
   const hashtags = value.split(' ').map((hashtag) => hashtag.toLowerCase());
   return hashtags.filter((item) => item !== '');
 };
 
-const validateHashtags = (value)=>{
+const validateHashtags = (value) => {
   const hashtags = getHashtags(value);
   const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
   for(let i = 0; i< hashtags.length; i++)  {
@@ -32,7 +32,7 @@ const validateHashtags = (value)=>{
 
 const validateHashtagsCount = (value) => getHashtags(value).length < 5;
 
-const validateHashtagsRepeat = (value) =>{
+const validateHashtagsRepeat = (value) => {
   const hashtags = getHashtags(value).sort();
   for(let i = 0; i< hashtags.length-1; i++)  {
     if(hashtags[i] === hashtags[i+1]){
@@ -42,7 +42,7 @@ const validateHashtagsRepeat = (value) =>{
   return true;
 };
 
-const clearForm = () =>{
+const clearForm = () => {
   inputUploadFileElement.value = '';
   hashtagsElement.value ='';
   descriptionElement.value= '';
