@@ -1,4 +1,4 @@
-import { createPhotos } from './data.js';
+import {createPhotos} from './data.js';
 import {openBigPicture} from './big-picture.js';
 
 const listPhotos = document.querySelector('.pictures');
