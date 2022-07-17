@@ -1,4 +1,7 @@
 const ESCAPE_KEY = 27;
+const RE = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
+const MAX_LENGTH_DESCRIPTION = 140;
+
 const formUploadFileElement = document.querySelector('#upload-select-image');
 const inputUploadFileElement = formUploadFileElement.querySelector('#upload-file');
 const imageEditorWindowElement = formUploadFileElement.querySelector('.img-upload__overlay');
@@ -12,7 +15,7 @@ const pristine = new Pristine(formUploadFileElement, {
   errorTextTag: 'div',
 });
 
-const validateDescription = (value) => value.length <= 140;
+const validateDescription = (value) => value.length <= MAX_LENGTH_DESCRIPTION;
 
 const getHashtags = (value) => {
   const hashtags = value.split(' ').map((hashtag) => hashtag.toLowerCase());
@@ -21,9 +24,8 @@ const getHashtags = (value) => {
 
 const validateHashtags = (value) => {
   const hashtags = getHashtags(value);
-  const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
   for(let i = 0; i< hashtags.length; i++)  {
-    if(!re.test(hashtags[i])){
+    if(!RE.test(hashtags[i])){
       return false;
     }
   }
@@ -70,7 +72,9 @@ const openModal = () => {
   });
   formUploadFileElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    pristine.validate();
+    if(pristine.validate()){
+      formUploadFileElement.submit();
+    }
   });
 };
 
