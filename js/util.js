@@ -6,25 +6,25 @@ const getRandomNumber = (min, max) => {
 };
 
 const getRandomArrayNumbers = (length, minNumber, maxNumber) => {
-  const arrayNumber = [];
-  while(arrayNumber.length < length){
-    arrayNumber.push(getRandomNumber(minNumber, maxNumber));
+  const numbers = [];
+  while(numbers.length < length){
+    numbers.push(getRandomNumber(minNumber, maxNumber));
   }
-  return arrayNumber;
+  return numbers;
 };
 
 const getRandomArrayUniqueNumbers = (length) => {
-  const arrayNumber = [];
+  const numbers = [];
   for(let i = 0; i < length; i++){
-    arrayNumber[i] = i;
+    numbers[i] = i;
   }
   for(let i = length - 1; i > 0; i--){
     const j = getRandomNumber(0, i);
-    const swap = arrayNumber[j];
-    arrayNumber[j] = arrayNumber[i];
-    arrayNumber[i] = swap;
+    const swap = numbers[j];
+    numbers[j] = numbers[i];
+    numbers[i] = swap;
   }
-  return arrayNumber;
+  return numbers;
 };
 
 const isValidLength = (inputString, maxLength) => (inputString.length <= maxLength);
