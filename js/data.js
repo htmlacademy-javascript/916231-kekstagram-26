@@ -1,6 +1,11 @@
 import {getRandomNumber, getRandomArrayNumbers, getRandomArrayUniqueNumbers} from './util.js';
 
 const PHOTO_COUNT = 25;
+const MIN_COUNT_COMMENTS = 1;
+const MAX_COUNT_COMMENTS = 10;
+const MIN_COUNT_LIKES = 15;
+const MAX_COUNT_LIKES = 200;
+const MAX_AVATARS = 6;
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -69,7 +74,7 @@ const getComments = (countComments) => {
   for(let i = 0; i < countComments; i++) {
     const comment = {
       id: id[i],
-      avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
+      avatar: `img/avatar-${getRandomNumber(1, MAX_AVATARS)}.svg`,
       message: MESSAGES[getRandomNumber(0, MESSAGES.length - 1)],
       name: NAMES[getRandomNumber(0, NAMES.length - 1)],
     };
@@ -82,7 +87,7 @@ const getComments = (countComments) => {
 const createPhotos = () => {
   const photos = [];
   const id = getRandomArrayUniqueNumbers(PHOTO_COUNT);
-  const likes = getRandomArrayNumbers(PHOTO_COUNT, 15, 200);
+  const likes = getRandomArrayNumbers(PHOTO_COUNT, MIN_COUNT_LIKES, MAX_COUNT_LIKES);
 
   for(let i = 0; i < PHOTO_COUNT; i++) {
     const photo = {
@@ -90,7 +95,7 @@ const createPhotos = () => {
       url: `photos/${id[i] + 1}.jpg`,
       description: DESCRIPTIONS[i],
       likes: likes[i],
-      comments: getComments(getRandomNumber(1, 10)),
+      comments: getComments(getRandomNumber(MIN_COUNT_COMMENTS, MAX_COUNT_COMMENTS)),
     };
     photos.push(photo);
   }
