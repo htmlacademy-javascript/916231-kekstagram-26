@@ -6,6 +6,7 @@ const imagePreviewElement = document.querySelector('.img-upload__preview');
 const scaleValueElement = document.querySelector('.scale__control--value');
 const smallerScaleElement = document.querySelector('.scale__control--smaller');
 const biggerScaleElement = document.querySelector('.scale__control--bigger');
+const cancelButtonElement = document.querySelector('#upload-cancel');
 
 let scaleValue = 1;
 
@@ -34,3 +35,10 @@ biggerScaleElement.addEventListener('click', () => {
     setScaleValue();
   }
 });
+
+cancelButtonElement.addEventListener('click', () => {
+  scaleValue = 1;
+  scaleImage();
+  setScaleValue();
+});
+
