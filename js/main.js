@@ -1,8 +1,11 @@
-import {createPhotos} from './data.js';
-import './picture.js';
+import {createPictures} from './picture.js';
+import  {setUserFormSubmit, closeModal} from './user-form.js';
+import {getData} from './api.js';
+import {showAlert} from './util.js';
 import './big-picture.js';
-import './user-form.js';
 import './scale-image.js';
 import './filter-image.js';
 
-createPhotos();
+getData(createPictures, showAlert);
+
+setUserFormSubmit(closeModal);

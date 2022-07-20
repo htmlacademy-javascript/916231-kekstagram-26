@@ -4,7 +4,6 @@ const sliderElement = document.querySelector('.effect-level__slider');
 const effectValueElement = document.querySelector('.effect-level__value');
 const filtersElement = document.querySelector('.effects__list');
 const sliderBlockElement = document.querySelector('.img-upload__effect-level');
-const cancelButtonElement = document.querySelector('#upload-cancel');
 const Filters = {
   'effect-none': () => {
     imagePreviewElement.style.filter = null;
@@ -94,6 +93,13 @@ const updateOptions = (options) => {
   });
 };
 
+const removeFilter = () => {
+  currentFilter = 'effect-none';
+  Filters[currentFilter]();
+  removeImageClass();
+  hiddenSlider();
+};
+
 hiddenSlider();
 
 noUiSlider.create(sliderElement, {
@@ -115,9 +121,7 @@ filtersElement.addEventListener('change', (evt) => {
   currentFilter = evt.target.id;
   effectValueElement.value = evt.target.id;
   if (evt.target.id === 'effect-none') {
-    removeImageClass();
-    hiddenSlider();
-    Filters[currentFilter]();
+    removeFilter();
   } else {
     showSlider();
     updateOptions(filtersOptions[evt.target.id]);
@@ -126,8 +130,4 @@ filtersElement.addEventListener('change', (evt) => {
   }
 });
 
-cancelButtonElement.addEventListener('click', ()=>{
-  currentFilter = 'effect-none';
-  Filters[currentFilter]();
-  removeImageClass();
-});
+export {removeFilter};
