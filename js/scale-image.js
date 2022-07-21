@@ -34,3 +34,12 @@ biggerScaleElement.addEventListener('click', () => {
     setScaleValue();
   }
 });
+
+const removeScale = () => {
+  scaleValue = 1;
+  scaleImage();
+  setScaleValue();
+};
+
+export {removeScale};
+
