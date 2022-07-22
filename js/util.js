@@ -58,12 +58,15 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+let isOpenErrorMessage = false;
+
 const onSuccessButtonClick = () => {
   document.body.removeChild(successElement);
 };
 
 const onErrorButtonClick = () => {
   document.body.removeChild(errorElement);
+  isOpenErrorMessage = false;
 };
 
 const onSuccessDocumentClick = (evt) => {
@@ -77,6 +80,7 @@ const onErrorDocumentClick = (evt) => {
   if (evt.target === errorElement) {
     document.body.removeChild(errorElement);
     document.removeEventListener('click', onErrorDocumentClick);
+    isOpenErrorMessage = false;
   }
 };
 
@@ -91,6 +95,7 @@ const onErrorEscKeydown = (evt) => {
   if (evt.keyCode === ESCAPE_KEY) {
     document.body.removeChild(errorElement);
     document.removeEventListener('keydown', onErrorEscKeydown);
+    isOpenErrorMessage = false;
   }
 };
 
@@ -111,13 +116,25 @@ const showErrorMessage = () => {
   document.addEventListener('click', onErrorDocumentClick);
   document.addEventListener('keydown', onErrorEscKeydown);
   document.body.appendChild(errorElement);
+  isOpenErrorMessage = true;
 };
 
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 export {
+  isOpenErrorMessage,
   getRandomNumber,
   getRandomArrayNumbers,
   getRandomArrayUniqueNumbers,
   showAlert,
   showSuccessMessage,
   showErrorMessage,
+  debounce
 };
