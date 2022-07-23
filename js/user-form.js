@@ -1,4 +1,4 @@
-import {showSuccessMessage, showErrorMessage} from './util.js';
+import {isOpenErrorMessage, showSuccessMessage, showErrorMessage} from './util.js';
 import {removeFilter} from './filter-image.js';
 import {removeScale} from './scale-image.js';
 import {sendData} from './api.js';
@@ -94,7 +94,6 @@ const setUserFormSubmit = (onSuccess) => {
         () => {
           unblockSubmitButton();
           showErrorMessage();
-          // document.removeEventListener('keydown', onPopupEscKeydown);
         },
         new FormData(evt.target)
       );
@@ -103,7 +102,7 @@ const setUserFormSubmit = (onSuccess) => {
 };
 
 function onPopupEscKeydown(evt) {
-  if (hashtagsElement === document.activeElement || descriptionElement === document.activeElement) {
+  if (hashtagsElement === document.activeElement || descriptionElement === document.activeElement || isOpenErrorMessage) {
     evt.stopPropagation();
   } else if (evt.keyCode === ESCAPE_KEY) {
     evt.preventDefault();
