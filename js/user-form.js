@@ -14,6 +14,7 @@ const cancelButtonElement = formUploadFileElement.querySelector('#upload-cancel'
 const hashtagsElement = formUploadFileElement.querySelector('.text__hashtags');
 const descriptionElement = formUploadFileElement.querySelector('.text__description');
 const submitElement = formUploadFileElement.querySelector('#upload-submit');
+const previewElement = formUploadFileElement.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(formUploadFileElement, {
   classTo: 'img-upload__field-wrapper',
@@ -110,8 +111,20 @@ function onPopupEscKeydown(evt) {
   }
 }
 
+const imgElement = document.querySelector('.img-upload__preview').children[0];
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 inputUploadFileElement.addEventListener('change', () => {
-  openModal();
+  const file = inputUploadFileElement.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imgElement.src = URL.createObjectURL(file);
+    previewElement.forEach((element) => {
+      element.style.backgroundImage = `url(${ URL.createObjectURL(file) })`;
+    });
+    openModal();
+  }
 });
 
 pristine.addValidator(hashtagsElement, validateHashtags, 'неверный хэш-тег');

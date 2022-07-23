@@ -1,5 +1,7 @@
 const ALERT_SHOW_TIME = 5000;
 const ESCAPE_KEY = 27;
+const TIMEOUT_DELAY = 500;
+
 const successTemplateElement = document.querySelector('#success').content.querySelector('.success');
 const errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
 let successElement;
@@ -119,12 +121,12 @@ const showErrorMessage = () => {
   isOpenErrorMessage = true;
 };
 
-function debounce (callback, timeoutDelay = 500) {
+function debounce (callback) {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELAY);
   };
 }
 

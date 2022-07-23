@@ -22,9 +22,14 @@ const getRandomPictures = (pictures) => {
 const compareCommentsLength = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
 const getFilteredPictures = (pictures) => {
-  if (currentFilter === filterDefault) {return pictures;}
-  if(currentFilter === filterRandom) {return getRandomPictures(pictures);}
-  if(currentFilter === filterDiscussed) {return pictures.slice().sort(compareCommentsLength);}
+  switch (currentFilter){
+    case filterDefault:
+      return pictures;
+    case filterRandom:
+      return getRandomPictures(pictures);
+    case filterDiscussed:
+      return pictures.slice().sort(compareCommentsLength);
+  }
 };
 
 filterSectionElement.classList.remove('img-filters--inactive');
