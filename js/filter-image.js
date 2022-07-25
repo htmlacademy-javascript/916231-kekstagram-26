@@ -67,7 +67,7 @@ const filterFunctions = {
   },
 };
 
-let currentFilter = 'effect-none';
+let currentFilter = Filters.EFFECT_NONE;
 
 const removeImageClass = () => {
   imagePreviewElement.className = '';
@@ -82,7 +82,7 @@ const showSlider = () => {
 };
 
 const removeFilter = () => {
-  currentFilter = 'effect-none';
+  currentFilter = Filters.EFFECT_NONE;
   filterFunctions.setFilterNone();
   removeImageClass();
   hideSlider();
