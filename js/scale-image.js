@@ -1,16 +1,17 @@
 const SCALE_VALUE_STEP = 0.25;
 const MAX_SCALE_VALUE = 1;
 const MIN_SCALE_VALUE = 0.25;
+const SCALE_COEFFICIENT = 100;
 
 const imagePreviewElement = document.querySelector('.img-upload__preview');
 const scaleValueElement = document.querySelector('.scale__control--value');
 const smallerScaleElement = document.querySelector('.scale__control--smaller');
 const biggerScaleElement = document.querySelector('.scale__control--bigger');
 
-let scaleValue = 1;
+let scaleValue = MAX_SCALE_VALUE;
 
 const setScaleValue = () => {
-  scaleValueElement.value = `${scaleValue*100}%`;
+  scaleValueElement.value = `${scaleValue*SCALE_COEFFICIENT}%`;
 };
 
 const scaleImage = () => {

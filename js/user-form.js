@@ -1,4 +1,4 @@
-import {isOpenErrorMessage, showSuccessMessage, showErrorMessage} from './util.js';
+import {showSuccessMessage, showErrorMessage} from './util.js';
 import {removeFilter} from './filter-image.js';
 import {removeScale} from './scale-image.js';
 import {sendData} from './api.js';
@@ -6,15 +6,17 @@ import {sendData} from './api.js';
 const ESCAPE_KEY = 27;
 const RE = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 const MAX_LENGTH_DESCRIPTION = 140;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const formUploadFileElement = document.querySelector('#upload-select-image');
 const inputUploadFileElement = formUploadFileElement.querySelector('#upload-file');
 const imageEditorWindowElement = formUploadFileElement.querySelector('.img-upload__overlay');
-const cancelButtonElement = formUploadFileElement.querySelector('#upload-cancel');
+const imagePreviewElement = formUploadFileElement.querySelector('.img-upload__preview').children[0];
 const hashtagsElement = formUploadFileElement.querySelector('.text__hashtags');
 const descriptionElement = formUploadFileElement.querySelector('.text__description');
 const submitElement = formUploadFileElement.querySelector('#upload-submit');
-const previewElement = formUploadFileElement.querySelectorAll('.effects__preview');
+const cancelButtonElement = formUploadFileElement.querySelector('#upload-cancel');
+const previewFilterElements = formUploadFileElement.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(formUploadFileElement, {
   classTo: 'img-upload__field-wrapper',
@@ -103,7 +105,7 @@ const setUserFormSubmit = (onSuccess) => {
 };
 
 function onPopupEscKeydown(evt) {
-  if (hashtagsElement === document.activeElement || descriptionElement === document.activeElement || isOpenErrorMessage) {
+  if (hashtagsElement === document.activeElement || descriptionElement === document.activeElement) {
     evt.stopPropagation();
   } else if (evt.keyCode === ESCAPE_KEY) {
     evt.preventDefault();
@@ -111,37 +113,23 @@ function onPopupEscKeydown(evt) {
   }
 }
 
-const imgElement = document.querySelector('.img-upload__preview').children[0];
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 inputUploadFileElement.addEventListener('change', () => {
   const file = inputUploadFileElement.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
-    imgElement.src = URL.createObjectURL(file);
-    previewElement.forEach((element) => {
-      element.style.backgroundImage = `url(${ URL.createObjectURL(file) })`;
+    imagePreviewElement.src = URL.createObjectURL(file);
+    previewFilterElements.forEach((element) => {
+      element.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
     });
     openModal();
   }
 });
 
 pristine.addValidator(hashtagsElement, validateHashtags, 'неверный хэш-тег');
-pristine.addValidator(
-  hashtagsElement,
-  validateHashtagsCount,
-  'не больше 5 хэш-тегов'
-);
-pristine.addValidator(
-  hashtagsElement,
-  validateHashtagsRepeat,
-  'хэш-тег не может повторяться'
-);
-pristine.addValidator(
-  descriptionElement,
-  validateDescription,
-  'не более 140 символов'
-);
+pristine.addValidator(hashtagsElement, validateHashtagsCount, 'не больше 5 хэш-тегов');
+pristine.addValidator(hashtagsElement, validateHashtagsRepeat, 'хэш-тег не может повторяться');
+pristine.addValidator(descriptionElement, validateDescription, 'не более 140 символов');
 
-export {setUserFormSubmit, closeModal};
+export {setUserFormSubmit, closeModal, onPopupEscKeydown};

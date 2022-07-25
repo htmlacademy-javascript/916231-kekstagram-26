@@ -1,5 +1,13 @@
-const imagePreviewElement = document.querySelector('.img-upload__preview')
-  .children[0];
+const Filters = {
+  EFFECT_NONE: 'effect-none',
+  EFFECT_CHROME: 'effect-chrome',
+  EFFECT_SEPIA: 'effect-sepia',
+  EFFECT_MARVIN: 'effect-marvin',
+  EFFECT_PHOBOS: 'effect-phobos',
+  EFFECT_HEAT: 'effect-heat',
+};
+
+const imagePreviewElement = document.querySelector('.img-upload__preview').children[0];
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectValueElement = document.querySelector('.effect-level__value');
 const filtersElement = document.querySelector('.effects__list');
@@ -38,18 +46,46 @@ const filtersOptions = {
   },
 };
 
+const filterFunctions = {
+  setFilterNone: () => {
+    imagePreviewElement.style.filter = null;
+  },
+  setFilterChrome: () => {
+    imagePreviewElement.style.filter = `grayscale(${effectValueElement.value})`;
+  },
+  setFilterSepia: () => {
+    imagePreviewElement.style.filter = `sepia(${effectValueElement.value})`;
+  },
+  setFilterMarvin: () => {
+    imagePreviewElement.style.filter = `invert(${effectValueElement.value}%)`;
+  },
+  setFilterPhobos: () => {
+    imagePreviewElement.style.filter = `blur(${effectValueElement.value}px)`;
+  },
+  setFilterHeat: () => {
+    imagePreviewElement.style.filter = `brightness(${effectValueElement.value})`;
+  },
+};
+
 let currentFilter = 'effect-none';
 
 const removeImageClass = () => {
   imagePreviewElement.className = '';
 };
 
-const hiddenSlider = () => {
+const hideSlider = () => {
   sliderBlockElement.classList.add('hidden');
 };
 
 const showSlider = () => {
   sliderBlockElement.classList.remove('hidden');
+};
+
+const removeFilter = () => {
+  currentFilter = 'effect-none';
+  filterFunctions.setFilterNone();
+  removeImageClass();
+  hideSlider();
 };
 
 const updateOptions = (options) => {
@@ -74,8 +110,7 @@ const updateOptions = (options) => {
   });
 };
 
-
-hiddenSlider();
+hideSlider();
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -86,42 +121,6 @@ noUiSlider.create(sliderElement, {
   step: 0.1,
   connect: 'lower',
 });
-const Filters = {
-  EFFECT_NONE: 'effect-none',
-  EFFECT_CHROME: 'effect-chrome',
-  EFFECT_SEPIA: 'effect-sepia',
-  EFFECT_MARVIN: 'effect-marvin',
-  EFFECT_PHOBOS: 'effect-phobos',
-  EFFECT_HEAT: 'effect-heat',
-};
-
-const filterFunctions = {
-  setFilterNone: () => {
-    imagePreviewElement.style.filter = null;
-  },
-  setFilterChrome: () => {
-    imagePreviewElement.style.filter = `grayscale(${effectValueElement.value})`;
-  },
-  setFilterSepia: () => {
-    imagePreviewElement.style.filter = `sepia(${effectValueElement.value})`;
-  },
-  setFilterMarvin: () => {
-    imagePreviewElement.style.filter = `invert(${effectValueElement.value}%)`;
-  },
-  setFilterPhobos: () => {
-    imagePreviewElement.style.filter = `blur(${effectValueElement.value}px)`;
-  },
-  setFilterHeat: () => {
-    imagePreviewElement.style.filter = `brightness(${effectValueElement.value})`;
-  },
-};
-
-const removeFilter = () => {
-  currentFilter = 'effect-none';
-  filterFunctions.setFilterNone();
-  removeImageClass();
-  hiddenSlider();
-};
 
 sliderElement.noUiSlider.on('update', () => {
   effectValueElement.value = sliderElement.noUiSlider.get();
@@ -149,14 +148,14 @@ sliderElement.noUiSlider.on('update', () => {
 
 filtersElement.addEventListener('change', (evt) => {
   currentFilter = evt.target.id;
-  effectValueElement.value = evt.target.id;
-  if (evt.target.id === 'effect-none') {
+  effectValueElement.value = currentFilter;
+  if (currentFilter === Filters.EFFECT_NONE) {
     removeFilter();
   } else {
     showSlider();
-    updateOptions(filtersOptions[evt.target.id]);
+    updateOptions(filtersOptions[currentFilter]);
     removeImageClass();
-    imagePreviewElement.classList.add(filtersOptions[evt.target.id].classImage);
+    imagePreviewElement.classList.add(filtersOptions[currentFilter].classImage);
   }
 });
 

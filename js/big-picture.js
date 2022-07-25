@@ -8,14 +8,14 @@ const likesCountElement = bigPictureSectionElement.querySelector('.likes-count')
 const imageDescriptionElement = bigPictureSectionElement.querySelector('.social__caption');
 const commentsCountElement = bigPictureSectionElement.querySelector('.comments-count');
 const commentsElement = bigPictureSectionElement.querySelector('.social__comments');
-const cancelButtonElement = bigPictureSectionElement.querySelector('.big-picture__cancel');
 const commentsLoadedCountElement = bigPictureSectionElement.querySelector('.comments-count-loaded');
 const commentsLoaderElement =  bigPictureSectionElement.querySelector('.comments-loader');
+const cancelButtonElement = bigPictureSectionElement.querySelector('.big-picture__cancel');
 
 let commentsLoadedCount = 0;
 let dataComments = [];
 
-const getImageInfo = (url, likes, commentsLenght, description) => {
+const setImageInfo = (url, likes, commentsLenght, description) => {
   imageElement.src = url;
   likesCountElement.textContent = likes;
   commentsCountElement.textContent = commentsLenght;
@@ -26,18 +26,18 @@ const getComment = (data) => {
   const comment = document.createElement('li');
   comment.classList.add('social__comment');
 
-  const img = document.createElement('img');
-  img.classList.add('social__picture');
-  img.src = data.avatar;
-  img.alt = data.name;
-  img.width = AVATAR_SIZE;
-  img.height = AVATAR_SIZE;
-  comment.appendChild(img);
+  const commentAvatar = document.createElement('img');
+  commentAvatar.classList.add('social__picture');
+  commentAvatar.src = data.avatar;
+  commentAvatar.alt = data.name;
+  commentAvatar.width = AVATAR_SIZE;
+  commentAvatar.height = AVATAR_SIZE;
+  comment.appendChild(commentAvatar);
 
-  const description = document.createElement('p');
-  description.classList.add('social__text');
-  description.textContent = data.message;
-  comment.appendChild(description);
+  const commentText = document.createElement('p');
+  commentText.classList.add('social__text');
+  commentText.textContent = data.message;
+  comment.appendChild(commentText);
   return comment;
 };
 
@@ -70,8 +70,10 @@ const onCommentsLoaderClick = () => {
 const closeModal = () => {
   bigPictureSectionElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  commentsLoadedCount = 0;
   commentsLoaderElement.classList.remove('hidden');
+
+  commentsLoadedCount = 0;
+
   commentsLoaderElement.removeEventListener('click', onCommentsLoaderClick);
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
@@ -87,7 +89,7 @@ const openModal = () => {
 };
 
 const openBigPicture = (data) => {
-  getImageInfo(data.url, data.likes, data.comments.length, data.description);
+  setImageInfo(data.url, data.likes, data.comments.length, data.description);
   commentsElement.innerHTML = '';
   dataComments = data.comments;
   loadNextComments();
