@@ -6,7 +6,7 @@ import {sendData} from './api.js';
 const ESCAPE_KEY = 27;
 const RE = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 const MAX_LENGTH_DESCRIPTION = 140;
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const formUploadFileElement = document.querySelector('#upload-select-image');
 const inputUploadFileElement = formUploadFileElement.querySelector('#upload-file');
@@ -116,7 +116,7 @@ function onPopupEscKeydown(evt) {
 inputUploadFileElement.addEventListener('change', () => {
   const file = inputUploadFileElement.files[0];
   const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  const matches = FILES_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
     imagePreviewElement.src = URL.createObjectURL(file);
