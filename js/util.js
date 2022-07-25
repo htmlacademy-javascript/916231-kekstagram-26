@@ -1,7 +1,12 @@
+import {onPopupEscKeydown} from './user-form.js';
+
 const ALERT_SHOW_TIME = 5000;
 const ESCAPE_KEY = 27;
+const TIMEOUT_DELAY = 500;
+
 const successTemplateElement = document.querySelector('#success').content.querySelector('.success');
 const errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
+
 let successElement;
 let errorElement;
 
@@ -12,15 +17,7 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const getRandomArrayNumbers = (length, minNumber, maxNumber) => {
-  const numbers = [];
-  while (numbers.length < length) {
-    numbers.push(getRandomNumber(minNumber, maxNumber));
-  }
-  return numbers;
-};
-
-const getRandomArrayUniqueNumbers = (length) => {
+const getRandomUniqueNumbers = (length) => {
   const numbers = [];
   for (let i = 0; i < length; i++) {
     numbers[i] = i;
@@ -33,10 +30,6 @@ const getRandomArrayUniqueNumbers = (length) => {
   }
   return numbers;
 };
-
-// const isValidLength = (inputString, maxLength) =>
-//   inputString.length <= maxLength;
-// isValidLength('qeqweqwe', 5);
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -58,45 +51,13 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-let isOpenErrorMessage = false;
-
 const onSuccessButtonClick = () => {
   document.body.removeChild(successElement);
 };
 
 const onErrorButtonClick = () => {
   document.body.removeChild(errorElement);
-  isOpenErrorMessage = false;
-};
-
-const onSuccessDocumentClick = (evt) => {
-  if (evt.target === successElement) {
-    document.body.removeChild(successElement);
-    document.removeEventListener('click', onSuccessDocumentClick);
-  }
-};
-
-const onErrorDocumentClick = (evt) => {
-  if (evt.target === errorElement) {
-    document.body.removeChild(errorElement);
-    document.removeEventListener('click', onErrorDocumentClick);
-    isOpenErrorMessage = false;
-  }
-};
-
-const onSuccessEscKeydown = (evt) => {
-  if (evt.keyCode === ESCAPE_KEY) {
-    document.body.removeChild(successElement);
-    document.removeEventListener('keydown', onSuccessEscKeydown);
-  }
-};
-
-const onErrorEscKeydown = (evt) => {
-  if (evt.keyCode === ESCAPE_KEY) {
-    document.body.removeChild(errorElement);
-    document.removeEventListener('keydown', onErrorEscKeydown);
-    isOpenErrorMessage = false;
-  }
+  document.addEventListener('keydown', onPopupEscKeydown);
 };
 
 const showSuccessMessage = () => {
@@ -112,27 +73,58 @@ const showErrorMessage = () => {
   errorElement = errorTemplateElement.cloneNode(true);
   errorElement.style.zIndex = '100';
   const errorButtonElement =  errorElement.querySelector('.error__button');
+  document.removeEventListener('keydown', onPopupEscKeydown);
   errorButtonElement.addEventListener('click', onErrorButtonClick);
   document.addEventListener('click', onErrorDocumentClick);
   document.addEventListener('keydown', onErrorEscKeydown);
   document.body.appendChild(errorElement);
-  isOpenErrorMessage = true;
 };
 
-function debounce (callback, timeoutDelay = 500) {
+function onSuccessDocumentClick (evt) {
+  if (evt.target === successElement) {
+    document.body.removeChild(successElement);
+    document.removeEventListener('click', onSuccessDocumentClick);
+    document.removeEventListener('keydown', onSuccessEscKeydown);
+  }
+}
+
+function onSuccessEscKeydown (evt) {
+  if (evt.keyCode === ESCAPE_KEY) {
+    document.body.removeChild(successElement);
+    document.removeEventListener('keydown', onSuccessEscKeydown);
+    document.removeEventListener('click', onSuccessDocumentClick);
+  }
+}
+
+function onErrorDocumentClick (evt) {
+  if (evt.target === errorElement) {
+    document.body.removeChild(errorElement);
+    document.removeEventListener('click', onErrorDocumentClick);
+    document.removeEventListener('keydown', onErrorEscKeydown);
+    document.addEventListener('keydown', onPopupEscKeydown);
+  }
+}
+
+function onErrorEscKeydown (evt) {
+  if (evt.keyCode === ESCAPE_KEY) {
+    document.body.removeChild(errorElement);
+    document.removeEventListener('keydown', onErrorEscKeydown);
+    document.removeEventListener('click', onErrorDocumentClick);
+    document.addEventListener('keydown', onPopupEscKeydown);
+  }
+}
+
+function debounce (callback) {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELAY);
   };
 }
 
 export {
-  isOpenErrorMessage,
-  getRandomNumber,
-  getRandomArrayNumbers,
-  getRandomArrayUniqueNumbers,
+  getRandomUniqueNumbers,
   showAlert,
   showSuccessMessage,
   showErrorMessage,
